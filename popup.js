@@ -4,10 +4,14 @@ chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
     const oldURLLabel = document.getElementById("original");
     oldURLLabel.value = url;
     oldURLLabel.addEventListener('input', (event) => {
+        // reset hint
+        const hint = document.getElementById("hint");
+        hint.innerText = "";
         sanitizeURL(event.target.value);
     });
     // prefil sanitized URL
-    sanitizeURL(url);
+    const newURL = sanitizeURL(url);
+    copyTextToClipboard(newURL)
 });
 
 function sanitizeURL(url) {
@@ -29,6 +33,7 @@ function sanitizeURL(url) {
 
     const copy = document.getElementById("copy");
     copy.addEventListener("click", () => {copyTextToClipboard(newURL)});
+    return newURL;
 }
 
 // https://stackoverflow.com/questions/3436102/copy-to-clipboard-in-chrome-extension
