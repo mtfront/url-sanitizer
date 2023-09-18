@@ -3,11 +3,17 @@ chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
 
     const oldURLLabel = document.getElementById("original");
     oldURLLabel.value = url;
-    // sanitizeURL get executed here and passed in
-    oldURLLabel.addEventListener('input', sanitizeURL(url));
+    oldURLLabel.addEventListener('input', (event) => {
+        sanitizeURL(event.target.value);
+    });
+    // prefil sanitized URL
+    sanitizeURL(url);
 });
 
 function sanitizeURL(url) {
+    if (url == null) {
+        return;
+    }
     let newURL = url;
     // youtube share use format like 
     // share: https://youtu.be/{vid}?si={sid} or
